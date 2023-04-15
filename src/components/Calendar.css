@@ -57,16 +57,27 @@
   background-color: #007bff;
   color: white;
 }
+/* 
+.calender-event {
+  color: white;
+} */
 
 .calendar-event {
-  background-color: #007bff;
   color: white;
-  padding: 5px;
-  margin: 2px;
-  border-radius: 3px;
-  font-size: 0.8rem;
-  text-align: center;
+  /* padding: 5px; */
+  /* margin: 2px; */
+  /* border-radius: 3px; */
+  font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* text-align: left; */
+  /* text-align: center; */
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.calendar-event-text {
+  color: white;
 }
