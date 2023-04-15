@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import './App.css';
-import Calendar from './components/Calendar';
+// import Calendar from './components/Calendar';
 import TaskInput from './components/TaskInput/TaskInput';
 import { callChatGPT } from './api/chatGPT';
+import Calendar from './components/Calendar';
 
 function App() {
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState(DATA.events)
+  const [workingHours, setWorkingHours] = useState(DATA.workingHours)
 
   const handleTaskSubmit = async (task) => {
     const apiKey = 'your-api-key'; // Replace with your actual API key
@@ -33,16 +35,7 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Welcome to My React App</h1>
-      </header>
-      <main>
-        <TaskInput onSubmit={handleTaskSubmit} />
-        <Calendar events={events} />
-      </main>
-      <footer>
-        <p>Created with love by [Your Name]</p>
-      </footer>
+      <Calendar events={events} workingHours={workingHours} />
     </div>
   );
 }
