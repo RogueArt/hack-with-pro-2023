@@ -1,34 +1,19 @@
 import React, { useState } from 'react';
 import './App.css';
-import Calendar from './components/Calendar';
+import Task from './models/task';
+import TaskListOpenaiRequest from './models/requests/taskRequest';
 import TaskInput from './components/TaskInput/TaskInput';
-import { callChatGPT } from './api/chatGPT';
+import generateResponse from './api/generateResponse';
 
 function App() {
-  const [events, setEvents] = useState([]);
-
   const handleTaskSubmit = async (task) => {
-    const apiKey = 'your-api-key'; // Replace with your actual API key
-    const prompt = `Given a task "${task}", generate events for a calendar.`;
     try {
-      const gptResponse = await callChatGPT(prompt, apiKey);
-      // Parse the GPT response to extract event data
-      // This will depend on the format of the generated events in the response
-      const generatedEvents = parseGPTResponse(gptResponse);
-
-      setEvents((prevEvents) => [...prevEvents, ...generatedEvents]);
+      let taskList = [new Task('feed dog', 'Monday', '2 hours'), new Task('lift', 'Monday', '5 hours')];
+      let request = new TaskListOpenaiRequest(taskList);
+      await generateResponse(request);
     } catch (error) {
       console.error('Error processing task:', error);
     }
-  };
-
-  // Add a function to parse the GPT response to extract event data
-  const parseGPTResponse = (gptResponse) => {
-    // Implement this function based on the expected format of the generated events
-    // Example:
-    const extractedEvents = [];
-    // Extract event data from gptResponse and populate extractedEvents
-    return extractedEvents;
   };
 
   return (
@@ -38,7 +23,6 @@ function App() {
       </header>
       <main>
         <TaskInput onSubmit={handleTaskSubmit} />
-        <Calendar events={events} />
       </main>
       <footer>
         <p>Created with love by [Your Name]</p>

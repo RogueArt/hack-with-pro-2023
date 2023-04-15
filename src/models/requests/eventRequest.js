@@ -1,4 +1,4 @@
-// eventList is a list of Events objects
-export default function TaskListOpenaiRequest(eventList) {
-    this.eventList = eventList;
+// eventList is an array of Events objects
+export default function EventListOpenaiRequest(eventList) {
+    this.messages = eventList;
 }
