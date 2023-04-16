@@ -9,6 +9,16 @@ import { useLocation } from 'react-router'
 
 const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
 
+function generateRandomHexCode() {
+  const hexChars = '0123456789abcdef'
+  let hexCode = '#'
+  for (let i = 0; i < 6; i++) {
+    const randomIndex = Math.floor(Math.random() * hexChars.length)
+    hexCode += hexChars[randomIndex]
+  }
+  return hexCode
+}
+
 function getHourFromString(str) {
   const parts = str.split(":");
   const hour = parseInt(parts[0], 10);
@@ -34,23 +44,33 @@ const EVENTS = [
   },
 ]
 
-function Calendar({ events = EVENTS, workingHours }) {
+function Calendar({ events, workingHours }) {
   if (!workingHours) workingHours = { startHour: 9, endHour: 17 }
   const [selectedCell, setSelectedCell] = useState(null)
 
   // console.log('Working hours', workingHours)
   
+
   const { state } = useLocation()
   console.log('State', JSON.stringify(state, null, 2))
 
   if (state) {
     state.events = state.events.filter(event => event.startTime && event.endTime)
 
-    
+    // events = filteredEvents.map(event => {
+    //   return {
+    //     task: event.task,
+    //     startTime: getHourFromString(event.startTime),
+    //     endTime: getHourFromString(event.endTime),
+    //     color: '#FF0000',
+    //     day: event.day,
+    //   }
+    // })
+
     for (let x = 0; x < state.events.length; x += 1) {
-      console.log('State event is: ', JSON.stringify(state.events[x], null, 2))
-      state.events[x].startTime = getHourFromString(state.events[x].startTime)
-      state.events[x].endTime = getHourFromString(state.events[x].endTime)
+      state.events[x].startTime = Number.isInteger(state.events[x].startTime) ? state.events[x].startTime : getHourFromString(state.events[x].startTime)
+      state.events[x].endTime = Number.isInteger(state.events[x].endTime) ? state.events[x].endTime : getHourFromString(state.events[x].endTime)
+      state.events[x].color = generateRandomHexCode()
     }
     events = state.events
   }
@@ -113,8 +133,9 @@ function Calendar({ events = EVENTS, workingHours }) {
                 selectedCell.hour === hour
 
               // If there's an event for this day and time, then set the style
-              console.log('New events',   events)
+              console.log('New events', events)
               const eventsForCell = events.filter((event) => {
+                console.log(event.day, day, event.startTime, hour, event.endTime, hour)
                 return event.day === day && event.startTime <= hour && hour < event.endTime
               })
               const hasEvent = eventsForCell.length > 0
