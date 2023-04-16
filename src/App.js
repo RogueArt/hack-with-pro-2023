@@ -1,11 +1,11 @@
 import React, { useState} from 'react';
 import './App.css';
 import TaskInput from './components/TaskInput/TaskInput';
-import { callChatGPT } from './api/chatGPT'
 import Calendar from './components/Calendar';
 import { DATA } from './testData';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { MoodPage } from './pages/MoodPage';
 
 function App() {
   const [events, setEvents] = useState(DATA.events)
@@ -30,6 +30,7 @@ function App() {
         <Route path="/" element={<div></div>}></Route>
         <Route path="/app" element={<Calendar events={events} workingHours={workingHours} />}></Route>
         <Route path="/input" element={<TaskInput onSubmit={handleTaskSubmit} />}></Route>
+        <Route path="/mood" element={<MoodPage />}></Route>
       </Routes>
     </BrowserRouter>
   )

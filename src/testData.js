@@ -1,4 +1,4 @@
-const DATA = {
+export const DATA = {
   events: [
     {
       name: 'MATH 61',
