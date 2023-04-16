@@ -1,6 +1,6 @@
 import { Configuration, OpenAIApi } from "openai";
 
-const OPENAI_API_KEY = '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';
+const OPENAI_API_KEY = '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';
 const MODEL = 'gpt-3.5-turbo';
 
 const configuration = new Configuration({
@@ -14,11 +14,10 @@ export default async function generateResponse(request) {
     const response = await openai.createChatCompletion({
       model: MODEL,
       messages: request.messageList,
+      temperature: 0.2
     })
-    console.log(response.data);
     return response
   } catch(error) {
     console.error(error.response.status, error.response.data);
-    // response.status(error.response.status).json(error.response.data);
   }
 }

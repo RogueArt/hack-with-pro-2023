@@ -16,6 +16,7 @@ Here are the rules for this:
 - Higher priority number should be prioritized higher
 - Tasks should not overlap
 - Optimize for minimizing context switching
-- Respond only in the output format and do not print anything else other than this list
 - Do not exceed the total working hours. If it exceeds the total hours, schedule as many of the highest priority tasks possible. In the output list, do not include the skipped tasks.
+
+Respond only in the output format and do NOT print anything else other than this list.
 `;
