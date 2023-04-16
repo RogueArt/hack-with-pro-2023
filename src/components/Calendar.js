@@ -2,10 +2,7 @@ import React, { useState } from 'react'
 import './Calendar.css'
 import { useLocation } from 'react-router'
 
-// If an hour is the start of an event, then put the name there and oclor
-// If the next hour is part of an event, then background color only
 
-// 5 PM must be between 4 PM and 6 PM
 
 const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
 
