@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import "../pages/MoodPage.css"
 
 const options = {
   Happy: [
@@ -52,10 +53,10 @@ export function MoodPage() {
 
   return (
     <div id={'mood-page-container'}>
-      <h1>Mood Tracker</h1>
+      <h1><span class="magic">Mood Tracker</span></h1>
 
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <label>
+        <label >
           😊 Happy:
           <input
             type="radio"
