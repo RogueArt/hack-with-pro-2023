@@ -7,6 +7,7 @@ import { DATA } from './testData';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { MoodPage } from './pages/MoodPage';
 import { LandingPage } from './pages/LandingPage';
+import CalendarPage from './pages/CalendarPage';
 
 function App() {
   const [events, setEvents] = useState(DATA.events)
@@ -29,7 +30,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage />}></Route>
-        <Route path="/app" element={<Calendar events={events} workingHours={workingHours} />}></Route>
+        <Route path="/app" element={<CalendarPage events={events} workingHours={workingHours} />}></Route>
         <Route path="/input" element={<TaskInput onSubmit={handleTaskSubmit} />}></Route>
         <Route path="/mood" element={<MoodPage />}></Route>
       </Routes>
