@@ -1,5 +1,5 @@
-export default function Task(taskContent, day, timeDuration) {
-    this.taskContent = taskContent;
-    this.day = day;
-    this.timeDuration = timeDuration
+export default function Task(content, timeDuration, priority) {
+    this.content = content;
+    this.timeDuration = timeDuration;
+    this.priority = priority;
 }

@@ -8,7 +8,15 @@ import generateResponse from './api/generateResponse';
 function App() {
   const handleTaskSubmit = async (task) => {
     try {
-      let taskList = [new Task('feed dog', 'Monday', '2 hours'), new Task('lift', 'Monday', '5 hours')];
+      let taskList = [
+        new Task("Feed dog", 15, 1),
+new Task("Go to gym", 60, 2),
+new Task("Socialize with Joe", 120, 2),
+new Task("MATH 61 Homework", 90, 1),
+new Task("CS 31 Homework", 120, 3),
+new Task("CS 32 Homework", 180, 1),
+new Task("CS 33 Homework", 60, 3)
+      ];
       let request = new TaskListOpenaiRequest(taskList);
       await generateResponse(request);
     } catch (error) {
