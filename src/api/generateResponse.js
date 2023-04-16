@@ -2,7 +2,7 @@ import { Configuration, OpenAIApi } from "openai";
 import OpenaiResponse from "../models/responses/openaiResponse";
 import ScheduledTask from "../models/scheduledTask";
 
-const OPENAI_API_KEY = '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';
+const OPENAI_API_KEY = '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';
 const MODEL = 'gpt-3.5-turbo';
 
 const configuration = new Configuration({
@@ -16,6 +16,9 @@ const formatResponse = (message) => {
   const scheduledTaskStrings = message.split('\n');
   for (let i = 0; i < scheduledTaskStrings.length; i++) {
     const task = scheduledTaskStrings[i];
+
+    if (!task.includes('|')) continue;
+
     const fields = task.split(' | ');
     const taskName = fields[0];
     const day = fields[2];

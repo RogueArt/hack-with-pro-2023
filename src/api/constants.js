@@ -9,7 +9,7 @@ The days of the week are: Monday
 
 The input format will be a list of tasks and a list of events:
 The input format of tasks will be:
-<Task Name> | <Time duration> | <Priority>
+<Task Name> | <Time duration in MINUTES> | <Priority>
 
 The input format of the events will be:
 <Event Name> | <Start Time> - <End Time> | <Day of week>
@@ -26,4 +26,5 @@ Here are the rules for this:
 - Do not exceed the total working hours. If it exceeds the total hours, schedule as many of the highest priority tasks possible. In the output list, do not include the skipped tasks.
 
 Respond only in the output format and do NOT print anything else other than this list.
+RESPOND ONLY IN THE OUTPUT FORMAT AND DO NOT PRINT ANYTHING ELSE.
 `;
