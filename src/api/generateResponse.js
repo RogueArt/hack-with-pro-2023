@@ -2,7 +2,7 @@ import { Configuration, OpenAIApi } from "openai";
 import OpenaiResponse from "../models/responses/openaiResponse";
 import ScheduledTask from "../models/scheduledTask";
 
-const OPENAI_API_KEY = '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';
+const OPENAI_API_KEY = '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';
 const MODEL = 'gpt-3.5-turbo';
 
 const configuration = new Configuration({
@@ -33,8 +33,8 @@ export default async function generateResponse(request) {
       messages: request.messageList,
       temperature: 0.2
     })
-
-    const formattedResponse = formatResponse(response.choices[1]);
+    // console.log(response);
+    const formattedResponse = formatResponse(response.data.choices[0].message.content);
     console.log(formattedResponse);
     return formattedResponse
   } catch(error) {
