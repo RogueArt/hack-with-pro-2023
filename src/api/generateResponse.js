@@ -1,6 +1,8 @@
 import { Configuration, OpenAIApi } from "openai";
+import OpenaiResponse from "../models/responses/openaiResponse";
+import ScheduledTask from "../models/scheduledTask";
 
-const OPENAI_API_KEY = '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';
+const OPENAI_API_KEY = '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';
 const MODEL = 'gpt-3.5-turbo';
 
 const configuration = new Configuration({
@@ -9,6 +11,21 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
+const formatResponse = (message) => {
+  let response  = [];
+  const scheduledTaskStrings = message.split('\n');
+  for (let i = 0; i < scheduledTaskStrings.length; i++) {
+    const task = scheduledTaskStrings[i];
+    const fields = task.split(' | ');
+    const taskName = fields[0];
+    const day = fields[2];
+    const timeRange = fields[1].split(' - ')
+    response.push(new ScheduledTask(taskName, day, timeRange[0], timeRange[1]));
+  }
+
+  return response;
+}
+
 export default async function generateResponse(request) {
   try {
     const response = await openai.createChatCompletion({
@@ -16,7 +33,10 @@ export default async function generateResponse(request) {
       messages: request.messageList,
       temperature: 0.2
     })
-    return response
+    // console.log(response);
+    const formattedResponse = formatResponse(response.data.choices[0].message.content);
+    console.log(formattedResponse);
+    return formattedResponse
   } catch(error) {
     console.error(error.response.status, error.response.data);
   }

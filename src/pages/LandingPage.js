@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Draggable from 'react-draggable';
 import '../pages/LandingPage.css'
+import React, { useEffect, useState } from 'react'
 
 const track = document.getElementById("image-track");
 
