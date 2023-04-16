@@ -107,7 +107,6 @@ const TaskInput = ({ onSubmit }) => {
               <thead>
                 <tr>
                   <th>Task</th>
-                  <th>Due Date</th>
                   <th>Study/Work Duration (hours)</th>
                   <th>Priority</th>
                 </tr>
@@ -118,8 +117,7 @@ const TaskInput = ({ onSubmit }) => {
                 tasks.map((task, index) => (
                   <tr key={index}>
                     <td>{task.task}</td>
-                    <td>{task.dueDate}</td>
-                    <td>{task.studyDuration}</td>
+                    <td>{task.duration} minutes</td>
                     <td>{'★'.repeat(task.priority)}</td>
                   </tr>
                 ))
@@ -221,7 +219,8 @@ const TaskInput = ({ onSubmit }) => {
                 <tr>
                   <th>Event</th>
                   <th>Event Day</th>
-                  <th>Event Duration (minutes)</th>
+                  <th>Start Time</th>
+                  <th>End Time</th>
                 </tr>
               </thead>
             )}
@@ -231,7 +230,8 @@ const TaskInput = ({ onSubmit }) => {
                   <tr key={index}>
                     <td>{event.event}</td>
                     <td>{event.eventDate}</td>
-                    <td>{event.eventDuration}</td>
+                    <td>{event.startTime}</td>
+                    <td>{event.endTime}</td>
                   </tr>
                 ))
               ) : (
