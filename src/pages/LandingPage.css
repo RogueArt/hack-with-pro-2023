@@ -15,7 +15,8 @@ body
  background-color: #f5f5dc;
  display: grid;
  margin:0rem;
- height: 30vh;
+ height: 100vh;
+ width: 100vw;
  margin: 20px;
  overflow: hidden;
  place-items: center;
@@ -91,4 +92,20 @@ h1 > .magic{
     font-weight: 900;
     font-family: 'Courier New', Courier, monospace;
     margin: 0rem;
+}
+
+.image{
+    width: 28vmin;
+    height: 28vmin;
+    object-fit: cover;
+    object-position: center;
+}
+
+#image-track{
+    display: flex;
+    gap: 4vmin;
+    position: absolute;
+    left: 50%;
+    top: 75%;
+    transform: translate(-1%, 0%);
 }
