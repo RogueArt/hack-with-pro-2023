@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styles from './TaskInput.module.css';
 
 const TaskInput = ({ onSubmit }) => {
+  
   const [tasks, setTasks] = useState([]);
   const [events, setEvents] = useState([]);
   const [newTask, setNewTask] = useState('');
@@ -10,6 +11,8 @@ const TaskInput = ({ onSubmit }) => {
   const [newEvent, setNewEvent] = useState('');
   const [newEventDate, setNewEventDate] = useState('');
   const [newEventDuration, setNewEventDuration] = useState('');
+  const [newPriority, setNewPriority] = useState(1);
+  const [priority, setPriority] = useState(0);
 
   const handleTaskSubmit = (e) => {
     e.preventDefault();
@@ -18,6 +21,7 @@ const TaskInput = ({ onSubmit }) => {
       task: newTask,
       dueDate: newDueDate,
       studyDuration: newStudyDuration,
+      priority: priority,
     };
 
     setTasks([...tasks, taskToAdd]);
@@ -25,6 +29,7 @@ const TaskInput = ({ onSubmit }) => {
     setNewTask('');
     setNewDueDate('');
     setNewStudyDuration('');
+    setPriority(0);
   };
 
   const handleEventSubmit = (e) => {
@@ -49,41 +54,60 @@ const TaskInput = ({ onSubmit }) => {
     setEvents([]);
   };
 
+  const handlePriorityChange = (newPriority) => {
+    setPriority(newPriority);
+  };
+
   return (
     <div className={styles.inputWrapper}>
       <div className={styles.tables}>
         <div className={styles.tasks}>
           <h2>Tasks</h2>
           <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>Task</th>
-              <th>Due Date</th>
-              <th>Study/Work Duration (hours)</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {tasks.length > 0 ? (
-             tasks.map((task, index) => (
-              <tr key={index}>
-             <td>{task.task}</td>
-           <td>{task.dueDate}</td>
-           <td>{task.studyDuration}</td>
-              </tr>
-           ))
-           ) : (
-            <tr>
-              <td colSpan="3" className={styles.emptyRow}>
-                No tasks entered.
-               </td>
-             </tr>
+            {tasks.length > 0 && (
+              <thead>
+                <tr>
+                  <th>Task</th>
+                  <th>Due Date</th>
+                  <th>Study/Work Duration (hours)</th>
+                  <th>Priority</th>
+                </tr>
+              </thead>
             )}
-        </tbody> 
+            <tbody>
+              {tasks.length > 0 ? (
+                tasks.map((task, index) => (
+                  <tr key={index}>
+                    <td>{task.task}</td>
+                    <td>{task.dueDate}</td>
+                    <td>{task.studyDuration}</td>
+                    <td>{'★'.repeat(task.priority)}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" className={styles.emptyRow}>
+                    No tasks entered.
+                  </td>
+                </tr>
+              )}
+            </tbody>
           </table>
-
           <h2>Add New Task</h2>
           <form onSubmit={handleTaskSubmit}>
+            <div className={styles.inputGroup}>
+              <label className={styles.label} htmlFor="task">
+                Task:
+              </label>
+              <input
+                id="task"
+                className={styles.input}
+                type="text"
+                value={newTask}
+                onChange={(e) => setNewTask(e.target.value)}
+                required
+              />
+            </div>
             <div className={styles.inputGroup}>
               <label className={styles.label} htmlFor="task">
                 Task:
@@ -125,6 +149,22 @@ const TaskInput = ({ onSubmit }) => {
                 required
               />
             </div>
+            <div className={styles.inputGroup}>
+              <label className={styles.label} htmlFor="priority">
+                Priority:
+              </label>
+              <div className={styles.starRating}>
+                {[1, 2, 3].map((star) => (
+                  <span
+                    key={star}
+                    className={`${styles.star} ${star <= newPriority ? styles.selected : ''}`}
+                    onClick={() => setNewPriority(star)}
+                  >
+                    ★
+                  </span>
+                ))}
+              </div>
+            </div>
             <button className={styles.button} type="submit">
                             Add Task
             </button>
@@ -133,14 +173,15 @@ const TaskInput = ({ onSubmit }) => {
         <div className={styles.events}>
           <h2>Events</h2>
           <table className={styles.table}>
-
-          <thead>
-  <tr>
-    <th>Event</th>
-    <th>Event Date</th>
-    <th>Event Duration (minutes)</th>
-  </tr>
-</thead>
+             {events.length > 0 && 
+               <thead>
+                <tr>
+                  <th>Event</th>
+                  <th>Event Date</th>
+                  <th>Event Duration (minutes)</th>
+                  </tr>
+                </thead>
+}
 <tbody>
   {events.length > 0 ? (
     events.map((event, index) => (
@@ -158,10 +199,6 @@ const TaskInput = ({ onSubmit }) => {
     </tr>
   )}
 </tbody>
-
-
-
-
           </table>
 
           <h2>Add New Event</h2>
