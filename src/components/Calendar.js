@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import './Calendar.css'
+import { useLocation } from 'react-router'
 
 // If an hour is the start of an event, then put the name there and oclor
 // If the next hour is part of an event, then background color only
@@ -8,8 +9,54 @@ import './Calendar.css'
 
 const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
 
-function Calendar({ events, workingHours }) {
+function getHourFromString(str) {
+  const parts = str.split(":");
+  const hour = parseInt(parts[0], 10);
+  return hour;
+}
+
+// "9:30" -> 9
+// "10:01" -> 10
+const EVENTS = [
+  {
+    task: 'Eat',
+    day: 'Monday',
+    startTime: 9,
+    endTime: 10,
+    color: '#FF0000',
+  },
+  {
+    task: 'Go to gym',
+    day: 'Monday',
+    startTime: 10,
+    endTime: 11,
+    color: '#FF0000',
+  },
+]
+
+function Calendar({ events = EVENTS, workingHours }) {
+  if (!workingHours) workingHours = { startHour: 9, endHour: 17 }
   const [selectedCell, setSelectedCell] = useState(null)
+
+  // console.log('Working hours', workingHours)
+  
+  const { state } = useLocation()
+  console.log('State', JSON.stringify(state, null, 2))
+
+  if (state) {
+    state.events = state.events.filter(event => event.startTime && event.endTime)
+
+    
+    for (let x = 0; x < state.events.length; x += 1) {
+      console.log('State event is: ', JSON.stringify(state.events[x], null, 2))
+      state.events[x].startTime = getHourFromString(state.events[x].startTime)
+      state.events[x].endTime = getHourFromString(state.events[x].endTime)
+    }
+    events = state.events
+  }
+  console.log('Events', events)
+
+  // events = EVENTS
 
   const handleCalendarClick = (day, hour) => {
     setSelectedCell({ day, hour })
@@ -66,8 +113,9 @@ function Calendar({ events, workingHours }) {
                 selectedCell.hour === hour
 
               // If there's an event for this day and time, then set the style
+              console.log('New events',   events)
               const eventsForCell = events.filter((event) => {
-                return event.daysOfWeek.includes(day) && event.startHour <= hour && hour < event.endHour
+                return event.day === day && event.startTime <= hour && hour < event.endTime
               })
               const hasEvent = eventsForCell.length > 0
 
@@ -75,7 +123,7 @@ function Calendar({ events, workingHours }) {
               let isEventStart = false
               if (hasEvent) {
                 const event = eventsForCell[0]
-                isEventStart = event.startHour === hour
+                isEventStart = event.startTime === hour
                 eventStyle = { backgroundColor: event.color, border: event.color }
               }
 
@@ -92,7 +140,8 @@ function Calendar({ events, workingHours }) {
                   // onClick={() => handleCalendarClick(day, hour)}
                 >
                   {eventsForCell.map(event => {
-                    return <p className={'calendar-event-text'}>{isEventStart && event.name}</p>
+                    isEventStart = event.startTime === hour
+                    return <p style={{ color: 'white' }} className={'calendar-event-text'}>{isEventStart && event.task}</p>
                   })}
                   {/* {eventsForCell.map(event => (
                     <div

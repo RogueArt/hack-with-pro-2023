@@ -1,5 +1,11 @@
 import React, { useState } from 'react'
 import styles from './TaskInput.module.css'
+import OpenaiRequest from '../../models/requests/taskRequest';
+
+import Task from '../../models/task.js'
+import Event from '../../models/event.js'
+import generateResponse from '../../api/generateResponse.js'
+import { useNavigate } from 'react-router';
 
 function getDayOfWeek(date) {
   const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -8,12 +14,13 @@ function getDayOfWeek(date) {
 }
 
 const TaskInput = ({ onSubmit }) => {
-  const [tasks, setTasks] = useState([getDayOfWeek])
+  const [tasks, setTasks] = useState([])
   const [events, setEvents] = useState([])
 
   // console.log('tasks', JSON.stringify(tasks, null, 2))
   // console.log('events', JSON.stringify(events, null, 2))
   console.log('events', events)
+  const navigate = useNavigate()
 
   // For tasks
   const [newTask, setNewTask] = useState('')
@@ -48,12 +55,12 @@ const TaskInput = ({ onSubmit }) => {
   const handleEventSubmit = e => {
     e.preventDefault()
 
-
-    console.log(newEventDate)
+    const date = new Date(newEventDate)
+    date.setHours(date.getHours() + 8)
 
     const eventToAdd = {
       event: newEvent,
-      eventDate: getDayOfWeek(new Date(newEventDate)),  
+      eventDate: getDayOfWeek(date),  
       startTime: newStartTime,
       endTime: newEndTime,
       // eventDuration: newEventDuration,
@@ -66,7 +73,25 @@ const TaskInput = ({ onSubmit }) => {
     // setNewEventDuration('')
   }
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
+    // Serialize task and event lists to 
+    const taskList = tasks.map(task => {
+      return new Task(task.task, task.duration, task.priority)
+    })
+
+    const eventList = events.map(event => {
+      return new Event(event.event, event.startTime, event.endTime, event.eventDate)
+    })
+
+    console.log(taskList, eventList)
+
+    let request = new OpenaiRequest(taskList, eventList)
+    const res = await generateResponse(request)
+    console.log(`GPT's response`, res)
+    navigate('/app', { state: { events: res } })
+
+    // console.log('Task submitted:', taskInfo)
+
     onSubmit(tasks, events)
     setTasks([])
     setEvents([])

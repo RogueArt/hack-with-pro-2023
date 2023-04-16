@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import '../pages/LandingPage.css'
+// import '../pages/LandingPage.css'
 
 export function LandingPage() {
   function doSomething() {

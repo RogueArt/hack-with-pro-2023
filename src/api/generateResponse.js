@@ -2,7 +2,7 @@ import { Configuration, OpenAIApi } from "openai";
 import OpenaiResponse from "../models/responses/openaiResponse";
 import ScheduledTask from "../models/scheduledTask";
 
-const OPENAI_API_KEY = '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';
+const OPENAI_API_KEY = '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';
 const MODEL = 'gpt-3.5-turbo';
 
 const configuration = new Configuration({
