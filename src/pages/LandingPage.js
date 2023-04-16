@@ -1,10 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 // import '../pages/LandingPage.css'
 
 export function LandingPage() {
   function doSomething() {
     console.log('do something!')
   }
+
+  useEffect(() => {
+    if (window?.location.pathname === '/') import('../pages/LandingPage.css')
+  }, [])
 
   return (
     <div>
