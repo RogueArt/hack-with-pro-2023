@@ -1,25 +1,261 @@
 import React, { useState } from 'react';
+import styles from './TaskInput.module.css';
 
 const TaskInput = ({ onSubmit }) => {
-  const [task, setTask] = useState('');
+  
+  const [tasks, setTasks] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [newTask, setNewTask] = useState('');
+  const [newDueDate, setNewDueDate] = useState('');
+  const [newStudyDuration, setNewStudyDuration] = useState('');
+  const [newEvent, setNewEvent] = useState('');
+  const [newEventDate, setNewEventDate] = useState('');
+  const [newEventDuration, setNewEventDuration] = useState('');
+  const [newPriority, setNewPriority] = useState(1);
+  const [priority, setPriority] = useState(0);
 
-  const handleSubmit = (e) => {
+  const handleTaskSubmit = (e) => {
     e.preventDefault();
-    onSubmit(task);
-    setTask('');
+
+    const taskToAdd = {
+      task: newTask,
+      dueDate: newDueDate,
+      studyDuration: newStudyDuration,
+      priority: priority,
+    };
+
+    setTasks([...tasks, taskToAdd]);
+
+    setNewTask('');
+    setNewDueDate('');
+    setNewStudyDuration('');
+    setPriority(0);
+  };
+
+  const handleEventSubmit = (e) => {
+    e.preventDefault();
+
+    const eventToAdd = {
+      event: newEvent,
+      eventDate: newEventDate,
+      eventDuration: newEventDuration,
+    };
+
+    setEvents([...events, eventToAdd]);
+
+    setNewEvent('');
+    setNewEventDate('');
+    setNewEventDuration('');
+  };
+
+  const handleGenerate = () => {
+    onSubmit(tasks, events);
+    setTasks([]);
+    setEvents([]);
+  };
+
+  const handlePriorityChange = (newPriority) => {
+    setPriority(newPriority);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        value={task}
-        onChange={(e) => setTask(e.target.value)}
-        placeholder="Enter your task"
-      />
-      <button type="submit">Submit</button>
-    </form>
+    <div className={styles.inputWrapper}>
+      <div className={styles.tables}>
+        <div className={styles.tasks}>
+          <h2>Tasks</h2>
+          <table className={styles.table}>
+            {tasks.length > 0 && (
+              <thead>
+                <tr>
+                  <th>Task</th>
+                  <th>Due Date</th>
+                  <th>Study/Work Duration (hours)</th>
+                  <th>Priority</th>
+                </tr>
+              </thead>
+            )}
+            <tbody>
+              {tasks.length > 0 ? (
+                tasks.map((task, index) => (
+                  <tr key={index}>
+                    <td>{task.task}</td>
+                    <td>{task.dueDate}</td>
+                    <td>{task.studyDuration}</td>
+                    <td>{'★'.repeat(task.priority)}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" className={styles.emptyRow}>
+                    No tasks entered.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+          <h2>Add New Task</h2>
+          <form onSubmit={handleTaskSubmit}>
+            <div className={styles.inputGroup}>
+              <label className={styles.label} htmlFor="task">
+                Task:
+              </label>
+              <input
+                id="task"
+                className={styles.input}
+                type="text"
+                value={newTask}
+                onChange={(e) => setNewTask(e.target.value)}
+                required
+              />
+            </div>
+            <div className={styles.inputGroup}>
+              <label className={styles.label} htmlFor="task">
+                Task:
+              </label>
+              <input
+                id="task"
+                className={styles.input}
+                type="text"
+                value={newTask}
+                onChange={(e) => setNewTask(e.target.value)}
+                required
+              />
+            </div>
+            <div className={styles.inputGroup}>
+              <label className={styles.label} htmlFor="due-date">
+                Due date:
+              </label>
+              <input
+                id="due-date"
+                className={styles.input}
+                type="date"
+                value={newDueDate}
+                onChange={(e) => setNewDueDate(e.target.value)}
+                required
+              />
+            </div>
+            <div className={styles.inputGroup}>
+              <label className={styles.label} htmlFor="study-duration">
+                Study/Work duration (hours):
+              </label>
+              <input
+                id="study-duration"
+                className={styles.input}
+                type="number"
+                step="0.5"
+                min="0"
+                value={newStudyDuration}
+                onChange={(e) => setNewStudyDuration(e.target.value)}
+                required
+              />
+            </div>
+            <div className={styles.inputGroup}>
+              <label className={styles.label} htmlFor="priority">
+                Priority:
+              </label>
+              <div className={styles.starRating}>
+                {[1, 2, 3].map((star) => (
+                  <span
+                    key={star}
+                    className={`${styles.star} ${star <= newPriority ? styles.selected : ''}`}
+                    onClick={() => setNewPriority(star)}
+                  >
+                    ★
+                  </span>
+                ))}
+              </div>
+            </div>
+            <button className={styles.button} type="submit">
+                            Add Task
+            </button>
+          </form>
+        </div>
+        <div className={styles.events}>
+          <h2>Events</h2>
+          <table className={styles.table}>
+             {events.length > 0 && 
+               <thead>
+                <tr>
+                  <th>Event</th>
+                  <th>Event Date</th>
+                  <th>Event Duration (minutes)</th>
+                  </tr>
+                </thead>
+}
+<tbody>
+  {events.length > 0 ? (
+    events.map((event, index) => (
+      <tr key={index}>
+        <td>{event.event}</td>
+        <td>{event.eventDate}</td>
+        <td>{event.eventDuration}</td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan="3" className={styles.emptyRow}>
+        No events entered.
+      </td>
+    </tr>
+  )}
+</tbody>
+          </table>
+
+          <h2>Add New Event</h2>
+          <form onSubmit={handleEventSubmit}>
+            <div className={styles.inputGroup}>
+              <label className={styles.label} htmlFor="event">
+                Event:
+              </label>
+              <input
+                id="event"
+                className={styles.input}
+                type="text"
+                value={newEvent}
+                onChange={(e) => setNewEvent(e.target.value)}
+                required
+              />
+            </div>
+            <div className={styles.inputGroup}>
+              <label className={styles.label} htmlFor="event-date">
+                Event date:
+              </label>
+              <input
+                id="event-date"
+                className={styles.input}
+                type="date"
+                value={newEventDate}
+                onChange={(e) => setNewEventDate(e.target.value)}
+                required
+              />
+            </div>
+            <div className={styles.inputGroup}>
+              <label className={styles.label} htmlFor="event-duration">
+                Event duration (minutes):
+              </label>
+              <input
+                id="event-duration"
+                className={styles.input}
+                type="number"
+                step="15"
+                min="0"
+                value={newEventDuration}
+                onChange={(e) => setNewEventDuration(e.target.value)}
+                required
+              />
+            </div>
+            <button className={styles.button} type="submit">
+              Add Event
+            </button>
+          </form>
+        </div>
+      </div>
+      <button className={styles.generateButton} onClick={handleGenerate}>
+        Generate
+      </button>
+    </div>
   );
 };
 
 export default TaskInput;
+

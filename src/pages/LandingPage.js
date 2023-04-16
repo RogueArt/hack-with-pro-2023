@@ -2,6 +2,10 @@ import React, { useState } from 'react'
 import '../pages/LandingPage.css'
 
 export function LandingPage() {
+  function doSomething() {
+    console.log('do something!')
+  }
+
   return (
     <div>
       <br></br>
