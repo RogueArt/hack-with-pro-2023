@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import './App.css';
-// import Calendar from './components/Calendar';
 import TaskInput from './components/TaskInput/TaskInput';
 import { callChatGPT } from './api/chatGPT'
 import Calendar from './components/Calendar';
 import { DATA } from './testData';
-
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
@@ -13,19 +11,8 @@ function App() {
   const [events, setEvents] = useState(DATA.events)
   const [workingHours, setWorkingHours] = useState(DATA.workingHours)
 
-  const handleTaskSubmit = async (task) => {
-    const apiKey = 'your-api-key'; // Replace with your actual API key
-    const prompt = `Given a task "${task}", generate events for a calendar.`;
-    try {
-      const gptResponse = await callChatGPT(prompt, apiKey);
-      // Parse the GPT response to extract event data
-      // This will depend on the format of the generated events in the response
-      const generatedEvents = parseGPTResponse(gptResponse);
-
-      setEvents((prevEvents) => [...prevEvents, ...generatedEvents]);
-    } catch (error) {
-      console.error('Error processing task:', error);
-    }
+  const handleTaskSubmit = (taskInfo) => {
+    console.log('Task submitted:', taskInfo);
   };
 
   // Add a function to parse the GPT response to extract event data
@@ -42,9 +29,10 @@ function App() {
       <Routes>
         <Route path="/" element={<div></div>}></Route>
         <Route path="/app" element={<Calendar events={events} workingHours={workingHours} />}></Route>
+        <Route path="/input" element={<TaskInput onSubmit={handleTaskSubmit} />}></Route>
       </Routes>
     </BrowserRouter>
   )
 }
 
-export default App;
+export default App; 
